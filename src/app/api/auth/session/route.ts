@@ -75,7 +75,12 @@ export async function POST(request: Request) {
 
   try {
     decodedToken = await verifyFirebaseToken(body.idToken);
-  } catch {
+  } catch (error: any) {
+    console.error("Firebase Token Verification Failed:", {
+      message: error.message,
+      code: error.code,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+    });
     return NextResponse.json(
       { error: "Invalid or expired Firebase token." },
       { status: 401 },
